@@ -9,13 +9,19 @@ import uvicorn
 
 app = FastAPI()
 
-@app.post("/")
-async def webhook(request: Request):
-    try:
-        json_data = await request.json()
+@app.api_route("/", methods=["GET", "POST"])
+async def handle_webhook(request: Request):
+    if request.method == "GET":
+        # Handle GET request
         return JSONResponse(content={"status": 200, "message": "ok"}, status_code=200)
-    except Exception as e:
-        return JSONResponse(content={"status": 500, "message": str(e)}, status_code=500)
+    
+    elif request.method == "POST":
+        # Handle POST request
+        try:
+            json_data = await request.json()
+            return JSONResponse(content={"status": 200, "message": "ok"}, status_code=200)
+        except Exception as e:
+            return JSONResponse(content={"status": 500, "message": str(e)}, status_code=500)
 
 async def start_polling():
     bot = Bot(token=BOT_TOKEN)
