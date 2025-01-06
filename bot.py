@@ -35,18 +35,20 @@ async def start_polling():
 
     @router.message(CommandStart())
     async def start(message: types.Message):
+        print("start was called")
         await message.answer('hi!')
 
     @router.message()
     async def foo(message: types.Message):
         if is_api_group(str(message.chat.id)):
+            print(f"text {message.text} received from {message.chat.id}")
             await message.answer('ha-ha')
 
     await dp.start_polling(bot)
     
 
 async def run_fastapi():
-    config = uvicorn.Config(app, host="0.0.0.0", port=5400, log_level="warning", access_log=False)
+    config = uvicorn.Config(app, host="0.0.0.0", port=int(os.environ.get("PORT")), log_level="warning", access_log=False)
     server = uvicorn.Server(config)
     await server.serve()
 

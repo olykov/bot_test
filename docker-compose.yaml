@@ -1,9 +1,0 @@
-version: '3.9'
-
-services:
-  app:
-    image: ${REPO}
-    container_name: ${SERVICE}
-    environment:
-      - TG_TOKEN=${TG_TOKEN}
-      - TG_ADMIN=${TG_ADMIN}
